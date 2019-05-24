@@ -7,57 +7,55 @@ using System.Threading.Tasks;
 
 namespace WorkDayWcfService
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Reentrant)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class Service : IService
     {
-        DateTime IService.GetCurrWorkDay()
+        /// <summary>
+        /// wcf 过于智能，会识别方法名中的Async，然后就与异步方法冲突了
+        /// </summary>
+        /// <returns></returns>
+        //string IService.GetCurrWorkDay()
+        //{
+        //    return DateTimeHelper.GetCurrWorkDay().ToString();
+        //}
+
+        Task<string> IService.GetCurrWorkDayAsync()
         {
-            return DateTimeHelper.GetCurrWorkDay();
+            return Task.Run(() => DateTimeHelper.GetCurrWorkDay().ToString());
         }
 
-        DateTime IService.GetDateTime()
+        /// <summary>
+        /// 和不用async没什么差别
+        /// </summary>
+        /// <returns></returns>
+        //async Task<string> IService.GetCurrWorkDayAsync()
+        //{
+        //    return await Task.Run(() => DateTimeHelper.GetCurrWorkDay().ToString());
+        //}
+
+        string IService.GetDateTime()
         {
-            return DateTimeHelper.GetDateTime();
+            return DateTimeHelper.GetDateTime().ToString();
         }
 
-        DateTime IService.GetWorkDay(DateTime date)
+        string IService.GetWorkDay(DateTime date)
         {
-            return DateTimeHelper.GetWorkDay(date);
+            return DateTimeHelper.GetWorkDay(date).ToString();
         }
 
-        DateTime IService.GetLast2Workday(DateTime date)
+        string IService.GetLastWorkday(DateTime date)
         {
-            return DateTimeHelper.GetLast2Workday(date);
+            return DateTimeHelper.GetLastWorkday(date).ToString();
         }
 
-        DateTime IService.GetLast3Workday(DateTime date)
+        string IService.GetNextWorkday(DateTime date)
         {
-            return DateTimeHelper.GetLast3Workday(date);
+            return DateTimeHelper.GetNextWorkday(date).ToString();
         }
 
-        DateTime IService.GetLastWorkday(DateTime date)
+        string IService.GetPointWorkday(DateTime date, int day)
         {
-            return DateTimeHelper.GetLastWorkday(date);
-        }
-
-        DateTime IService.GetNext2Workday(DateTime date)
-        {
-            return DateTimeHelper.GetNext2Workday(date);
-        }
-
-        DateTime IService.GetNext3Workday(DateTime date)
-        {
-            return DateTimeHelper.GetNext3Workday(date);
-        }
-
-        DateTime IService.GetNextWorkday(DateTime date)
-        {
-            return DateTimeHelper.GetNextWorkday(date);
-        }
-
-        DateTime IService.GetPointWorkday(DateTime date, int day)
-        {
-            return DateTimeHelper.GetDateTime();
+            return DateTimeHelper.GetPointWorkday(date, day).ToString();
         }
     }
 }

@@ -41,7 +41,7 @@ namespace WorkDayWcfService
         /// <returns></returns>
         public static DateTime GetDateTime()
         {
-            return DateTime.Now.ToUniversalTime();
+            return DateTime.Now;
         }
 
         /// <summary>
@@ -73,27 +73,7 @@ namespace WorkDayWcfService
         {
             return GetWorkday(date, -1);
         }
-
-        /// <summary>
-        /// 上两个工作日
-        /// </summary>
-        /// <param name="date">日期</param>
-        /// <returns>result为DateTime</returns>
-        public static DateTime GetLast2Workday(DateTime date)
-        {
-            return GetWorkday(date, -2);
-        }
-
-        /// <summary>
-        /// 上三个工作日
-        /// </summary>
-        /// <param name="date">日期</param>
-        /// <returns>result为DateTime</returns>
-        public static DateTime GetLast3Workday(DateTime date)
-        {
-            return GetWorkday(date, -3);
-        }
-
+        
         /// <summary>
         /// 下一工作日
         /// </summary>
@@ -102,26 +82,6 @@ namespace WorkDayWcfService
         public static DateTime GetNextWorkday(DateTime date)
         {
             return GetWorkday(date, 1);
-        }
-
-        /// <summary>
-        /// 下二个工作日
-        /// </summary>
-        /// <param name="date">日期</param>
-        /// <returns>result为DateTime</returns>
-        public static DateTime GetNext2Workday(DateTime date)
-        {
-            return GetWorkday(date, 2);
-        }
-
-        /// <summary>
-        /// 下三个工作日
-        /// </summary>
-        /// <param name="date">日期</param>
-        /// <returns>result为DateTime</returns>
-        public static DateTime GetNext3Workday(DateTime date)
-        {
-            return GetWorkday(date, 3);
         }
 
         /// <summary>
@@ -179,7 +139,7 @@ namespace WorkDayWcfService
                 } while (notWorkday);
             }
 
-            return curWorkday.Date.ToUniversalTime();
+            return curWorkday.Date;
         }
     }
 }
