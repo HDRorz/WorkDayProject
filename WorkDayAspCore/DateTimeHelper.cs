@@ -12,7 +12,7 @@ namespace WorkDayAspCore
     public static class DateTimeHelper
     {
     
-        static SortedSet<DateTime> NonWorkdays = new SortedSet<DateTime>();
+        static HashSet<DateTime> NonWorkdays = new HashSet<DateTime>();
 
         /// <summary>
         /// 15:00:01
@@ -33,7 +33,7 @@ namespace WorkDayAspCore
             string[] nonworkdaylist = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "nonworkdaylist.txt"));
 
             NonWorkdays =
-                new SortedSet<DateTime>(nonworkdaylist.AsEnumerable().Select(dateStr => Convert.ToDateTime(dateStr)));
+                new HashSet<DateTime>(nonworkdaylist.AsEnumerable().Select(dateStr => Convert.ToDateTime(dateStr)));
         }
 
         /// <summary>
