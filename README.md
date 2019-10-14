@@ -8,10 +8,9 @@
 
 ## 目录
 
+```
 .
-
 ├─WorkDayAspCore				--.net asp.net core
-
-├─WorkDayWcfService			--.net wcf webHttpBinding
-
+├─WorkDayWcfService				--.net wcf webHttpBinding
 └─workday_webflux				--java spring webflux
+```
