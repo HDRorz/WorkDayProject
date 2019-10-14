@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 
 namespace WorkDayAspCore
 {
@@ -21,7 +20,7 @@ namespace WorkDayAspCore
         public async Task Invoke(HttpContext context)
         {
             ////This line allows us to set the reader for the request back at the beginning of its stream.
-            context.Request.EnableRewind();
+            context.Request.EnableBuffering();
 
             //Copy a pointer to the original response body stream
             var originalBodyStream = context.Response.Body;
