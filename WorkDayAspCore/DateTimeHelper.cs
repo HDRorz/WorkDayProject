@@ -1,18 +1,20 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace WorkDayAspCore
 {
     public static class DateTimeHelper
     {
-    
+
         static HashSet<DateTime> NonWorkdays = new HashSet<DateTime>();
+
+        static List<DateTime> WorkDayList = new List<DateTime>();
+
+        static ConcurrentDictionary<DateTime, int> CurrWorkDayIndexDict = new ConcurrentDictionary<DateTime, int>();
 
         /// <summary>
         /// 15:00:01
@@ -34,6 +36,40 @@ namespace WorkDayAspCore
 
             NonWorkdays =
                 new HashSet<DateTime>(nonworkdaylist.AsEnumerable().Select(dateStr => Convert.ToDateTime(dateStr)));
+
+            DateTime startDate = NonWorkdays.Min();
+            DateTime endDate = new DateTime(NonWorkdays.Max().Year + 1, 1, 1);
+            int passDays = Convert.ToInt32((endDate - startDate).TotalDays);
+            DateTime tempDate = startDate;
+
+            Dictionary<DateTime, int> tempWorkDayDict = new Dictionary<DateTime, int>();
+            int index = 0;
+            for (int days = 0; days < passDays; days++)
+            {
+                DateTime thisDate = startDate.AddDays(days);
+                if (!NonWorkdays.Contains(thisDate))
+                {
+                    tempWorkDayDict.Add(thisDate, index);
+                    index++;
+                }
+            }
+
+            WorkDayList = new List<DateTime>(tempWorkDayDict.Count);
+            WorkDayList = tempWorkDayDict.Keys.ToList();
+            WorkDayList.Sort();
+
+            CurrWorkDayIndexDict = new ConcurrentDictionary<DateTime, int>();
+            //Parallel.For(0, passDays - 1,
+            //    days =>
+            //    {
+            //        DateTime thisDate = startDate.AddDays(days);
+            //        CurrWorkDayIndexDict[thisDate] = tempWorkDayDict[GetWorkday_Old(thisDate, 0);
+            //    });
+            for (int days = 0; days < passDays; days++)
+            {
+                DateTime thisDate = startDate.AddDays(days);
+                CurrWorkDayIndexDict[thisDate] = tempWorkDayDict[GetWorkday_Old(thisDate, 0)];
+            }
         }
 
         /// <summary>
@@ -65,6 +101,11 @@ namespace WorkDayAspCore
             return GetWorkday(DateTime.Now, 0);
         }
 
+        public static DateTime GetCurrWorkDay_Old()
+        {
+            return GetWorkday_Old(DateTime.Now, 0);
+        }
+
         /// <summary>
         /// 上一工作日
         /// </summary>
@@ -84,6 +125,10 @@ namespace WorkDayAspCore
         {
             return GetWorkday(date, 1);
         }
+        public static DateTime GetNextWorkday_Old(DateTime date)
+        {
+            return GetWorkday_Old(date, 1);
+        }
 
         /// <summary>
         /// 指定工作日
@@ -102,7 +147,7 @@ namespace WorkDayAspCore
         /// <param name="date">指定日期</param>
         /// <param name="days">向前或向后推days个工作日，向前为负数，向后为正数</param>
         /// <returns></returns>
-        private static DateTime GetWorkday(DateTime date, int days)
+        private static DateTime GetWorkday_Old(DateTime date, int days)
         {
             int pos = 1;    // 1代表days为非负数，-1代表days为负数
             if (days < 0)
@@ -140,6 +185,28 @@ namespace WorkDayAspCore
             }
 
             return curWorkday.Date;
+        }
+
+        private static DateTime GetWorkday(DateTime date, int days)
+        {
+
+            DateTime curWorkday = date.Date;
+            // 如果时间已经超过当天的15:00:01，则作为下一工作日算
+            if (date.TimeOfDay >= LatestTime)
+            {
+                curWorkday = curWorkday.AddDays(1);
+            }
+
+            try
+            {
+                int curWorkdayIndex = CurrWorkDayIndexDict[curWorkday];
+
+                return WorkDayList[curWorkdayIndex + days];
+            }
+            catch (Exception)
+            {
+                return curWorkday;
+            }
         }
     }
 }

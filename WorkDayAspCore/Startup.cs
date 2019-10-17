@@ -27,7 +27,7 @@ namespace WorkDayAspCore
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-            //services.AddResponseCompression();
+            services.AddResponseCompression();
 
             //Middleware
             //services.AddScoped<RequestResponseMiddleware>();
@@ -59,6 +59,8 @@ namespace WorkDayAspCore
                 //endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllers();
             });
+
+            DateTimeHelper.GetCurrWorkDay();
         }
     }
 }
