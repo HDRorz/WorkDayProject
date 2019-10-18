@@ -14,7 +14,7 @@ namespace WorkDayAspCore
 
         static List<DateTime> WorkDayList = new List<DateTime>();
 
-        static ConcurrentDictionary<DateTime, int> CurrWorkDayIndexDict = new ConcurrentDictionary<DateTime, int>();
+        static Dictionary<DateTime, int> CurrWorkDayIndexDict = new Dictionary<DateTime, int>();
 
         /// <summary>
         /// 15:00:01
@@ -58,7 +58,7 @@ namespace WorkDayAspCore
             WorkDayList = tempWorkDayDict.Keys.ToList();
             WorkDayList.Sort();
 
-            CurrWorkDayIndexDict = new ConcurrentDictionary<DateTime, int>();
+            CurrWorkDayIndexDict = new Dictionary<DateTime, int>(passDays);
             //Parallel.For(0, passDays - 1,
             //    days =>
             //    {
