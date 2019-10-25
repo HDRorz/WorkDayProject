@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,7 +28,10 @@ namespace WorkDayAspCore
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-            services.AddResponseCompression();
+            services.AddResponseCompression(options => {
+                options.Providers.Add<BrotliCompressionProvider>();
+                options.Providers.Add<GzipCompressionProvider>();
+            });
 
             //Middleware
             //services.AddScoped<RequestResponseMiddleware>();
@@ -42,7 +46,10 @@ namespace WorkDayAspCore
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseResponseCompression();
+            app.UseHsts();
+            app.UseHttpsRedirection();
+
+            app.UseResponseCompression();
 
             //app.UseRequestResponseMiddleware();
 

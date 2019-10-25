@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -28,6 +30,11 @@ namespace WorkDayAspCore
                         {
                             // Set properties and call methods on options
                             serverOptions.AddServerHeader = false;
+                            serverOptions.ConfigureEndpointDefaults(listenOptions =>
+                            {
+                                listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+                                listenOptions.UseHttps("cacert.p12");
+                            });
                         })
                         .UseStartup<Startup>();
                     });
