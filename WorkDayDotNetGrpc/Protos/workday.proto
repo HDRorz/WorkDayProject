@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+option csharp_namespace = "WorkDayDotNetGrpc.Protos";
+
+package DateService;
+
+service WorkDay {
+  rpc GetCurrWorkDay (EmptyRequest) returns (DateTimeReply);
+  rpc GetWorkDay (DateTimeRequest) returns (DateTimeReply);
+}
+
+message EmptyRequest {
+}
+
+message DateTimeRequest {
+ google.protobuf.Timestamp date = 1;
+}
+
+message DateTimeReply {
+ google.protobuf.Timestamp date = 1;
+}
