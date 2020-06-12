@@ -32,8 +32,8 @@ namespace WorkDayAspCore
                             serverOptions.AddServerHeader = false;
                             serverOptions.ConfigureEndpointDefaults(listenOptions =>
                             {
-                                listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
-                                listenOptions.UseHttps("cacert.p12");
+                                //listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+                                //listenOptions.UseHttps("cacert.p12");
                             });
                         })
                         .UseStartup<Startup>();

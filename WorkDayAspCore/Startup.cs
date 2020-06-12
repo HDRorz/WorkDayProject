@@ -28,10 +28,10 @@ namespace WorkDayAspCore
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-            services.AddResponseCompression(options => {
-                options.Providers.Add<BrotliCompressionProvider>();
-                options.Providers.Add<GzipCompressionProvider>();
-            });
+            //services.AddResponseCompression(options => {
+            //    options.Providers.Add<BrotliCompressionProvider>();
+            //    options.Providers.Add<GzipCompressionProvider>();
+            //});
 
             //Middleware
             //services.AddScoped<RequestResponseMiddleware>();
@@ -46,18 +46,18 @@ namespace WorkDayAspCore
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHsts();
-            app.UseHttpsRedirection();
+            //app.UseHsts();
+            //app.UseHttpsRedirection();
 
-            app.UseResponseCompression();
+            //app.UseResponseCompression();
 
             //app.UseRequestResponseMiddleware();
 
-            app.Use((context, next) =>
-            {
-                context.Response.Headers.Clear();
-                return next();
-            });
+            //app.Use((context, next) =>
+            //{
+            //    context.Response.Headers.Clear();
+            //    return next();
+            //});
 
             app.UseRouting();
 
