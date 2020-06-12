@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.AspNetCore.Authentication.Certificate;
 
 namespace WorkDayDotNetGrpc
 {
@@ -16,7 +18,18 @@ namespace WorkDayDotNetGrpc
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddGrpc();
+            services.AddGrpc(configureOptions => {
+                configureOptions.EnableDetailedErrors = true;
+            });
+
+            //services.AddAuthorization();
+            //services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
+            //    .AddCertificate(options =>
+            //    {
+            //        // Not recommended in production environments. The example is using a test certificate
+            //        options.RevocationMode = X509RevocationMode.NoCheck;
+            //        options.AllowedCertificateTypes = CertificateTypes.All;
+            //    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -27,8 +40,8 @@ namespace WorkDayDotNetGrpc
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHsts();
-            app.UseHttpsRedirection();
+            //app.UseHsts();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

@@ -20,14 +20,14 @@ namespace WorkDayDotNetGrpc.Services
         {
             return Task.FromResult(new DateTimeReply
             {
-                Date = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(DateTimeHelper.GetCurrWorkDay())
+                Date = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(DateTimeHelper.GetCurrWorkDay().ToUniversalTime())
             });
         }
         public override Task<DateTimeReply> GetWorkDay(DateTimeRequest request, ServerCallContext context)
         {
             return Task.FromResult(new DateTimeReply
             {
-                Date = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(DateTimeHelper.GetWorkDay(request.Date.ToDateTime()))
+                Date = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(DateTimeHelper.GetWorkDay(request.Date.ToDateTime().ToUniversalTime()))
             });
         }
     }

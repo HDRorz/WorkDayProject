@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.Extensions.Hosting;
 
 namespace WorkDayDotNetGrpc
@@ -29,8 +30,12 @@ namespace WorkDayDotNetGrpc
                         serverOptions.ConfigureEndpointDefaults(listenOptions =>
                         {
                             listenOptions.Protocols = HttpProtocols.Http2;
-                            listenOptions.UseHttps("cacert.p12");
+                            //listenOptions.UseHttps("cacert.p12");
                         });
+                        //serverOptions.ConfigureHttpsDefaults(httpsOptions =>
+                        //{
+                        //    httpsOptions.ClientCertificateMode = ClientCertificateMode.AllowCertificate;
+                        //});
                     }).UseStartup<Startup>();
                 });
     }
