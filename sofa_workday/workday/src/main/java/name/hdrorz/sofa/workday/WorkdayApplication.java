@@ -1,8 +1,7 @@
-package name.hdrorz.workday;
+package name.hdrorz.sofa.workday;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class WorkdayApplication {
@@ -11,8 +10,4 @@ public class WorkdayApplication {
         SpringApplication.run(WorkdayApplication.class, args);
     }
 
-    @Bean
-    public ServerFilter serverFilter() {
-        return new ServerFilter();
-    }
 }

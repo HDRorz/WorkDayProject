@@ -10,7 +10,7 @@
     </parent>
     <groupId>name.hdrorz</groupId>
     <artifactId>workday</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2</version>
     <name>workday</name>
     <description>webflux workday</description>
 
