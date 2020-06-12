@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WorkDayWcfService
@@ -56,6 +57,11 @@ namespace WorkDayWcfService
         string IService.GetPointWorkday(DateTime date, int day)
         {
             return DateTimeHelper.GetPointWorkday(date, day).ToString();
+        }
+
+        Task<string> IService.TestForThrottle()
+        {
+            return Task.Run(() => { Thread.Sleep(50); return "true"; });
         }
     }
 }

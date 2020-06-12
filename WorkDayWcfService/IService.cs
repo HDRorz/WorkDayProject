@@ -38,5 +38,9 @@ namespace WorkDayWcfService
         [OperationContract]
         [WebGet(UriTemplate = "PointWorkDay?date={date}&day={day}", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         string GetPointWorkday(DateTime date, int day);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "TestForThrottle", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        Task<string> TestForThrottle();
     }
 }
